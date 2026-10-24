@@ -1,0 +1,41 @@
+services:
+  # ─── Development Postgres ────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine          # slim, production-grade image
+    container_name: yourcar_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: yourcar
+      POSTGRES_PASSWORD: yourcar_pass
+      POSTGRES_DB: yourcar_dev
+    ports:
+      - "5432:5432"                    # host:container
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yourcar -d yourcar_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ─── Test Postgres (isolated, different port so both can run together) ────────
+  db_test:
+    image: postgres:16-alpine
+    container_name: yourcar_db_test
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: yourcar
+      POSTGRES_PASSWORD: yourcar_pass
+      POSTGRES_DB: yourcar_test
+    ports:
+      - "5433:5432"                    # different host port
+    tmpfs:
+      - /var/lib/postgresql/data       # ephemeral — wipes on container stop, fast for tests
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yourcar -d yourcar_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data:

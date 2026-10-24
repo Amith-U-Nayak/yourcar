@@ -1,0 +1,44 @@
+# ─── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Node ──────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ─── Build artefacts ───────────────────────────────────────────────────────────
+dist/
+build/
+.vite/
+
+# ─── Environment files (NEVER commit secrets) ─────────────────────────────────
+.env
+.env.local
+.env.development
+.env.production
+# .env.example is committed on purpose (no real secrets)
+
+# ─── TypeScript ────────────────────────────────────────────────────────────────
+*.tsbuildinfo
+
+# ─── Jest / Vitest coverage ────────────────────────────────────────────────────
+coverage/
+
+# ─── Prisma ────────────────────────────────────────────────────────────────────
+# generated client is re-generated on install; do not track
+backend/src/generated/
+
+# ─── Editor ────────────────────────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ─── Docker volumes / data ────────────────────────────────────────────────────
+postgres-data/
