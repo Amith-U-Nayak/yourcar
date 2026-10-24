@@ -2,6 +2,9 @@
 .DS_Store
 Thumbs.db
 
+# ─── Assignment PDF (private, do not publish) ─────────────────────────────────
+*.pdf
+
 # ─── Node ──────────────────────────────────────────────────────────────────────
 node_modules/
 npm-debug.log*
