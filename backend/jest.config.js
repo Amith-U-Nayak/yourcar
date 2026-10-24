@@ -1,4 +1,9 @@
-/** @type {import('jest').Config} */
+/**
+ * @type {import('jest').Config}
+ *
+ * Phase 0: stub globalSetup/Teardown used.
+ * Phase 1: replace stubs with real Prisma DB migration + disconnect logic.
+ */
 module.exports = {
   // Use ts-jest so Jest understands TypeScript directly — no separate compile step
   preset: "ts-jest",
