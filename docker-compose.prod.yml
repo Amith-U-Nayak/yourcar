@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  # ─── Production PostgreSQL ──────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: yourcar_prod_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-yourcar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-yourcar_prod_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-yourcar_prod}
+    volumes:
+      - yourcar_prod_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-yourcar} -d ${POSTGRES_DB:-yourcar_prod}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - yourcar-prod-net
+
+  # ─── Production Backend API ─────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: yourcar_prod_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-yourcar}:${POSTGRES_PASSWORD:-yourcar_prod_secret}@postgres:5432/${POSTGRES_DB:-yourcar_prod}?schema=public
+      JWT_SECRET: ${JWT_SECRET:-production_super_secret_jwt_key_yourcar_2026_secure}
+      JWT_EXPIRES_IN: "7d"
+      CORS_ORIGIN: "*"
+    command: >
+      sh -c "npx prisma migrate deploy &&
+             node dist/index.js"
+    ports:
+      - "3000:3000"
+    networks:
+      - yourcar-prod-net
+
+  # ─── Production Frontend (Nginx SPA) ────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: yourcar_prod_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    networks:
+      - yourcar-prod-net
+
+volumes:
+  yourcar_prod_postgres_data:
+
+networks:
+  yourcar-prod-net:
+    driver: bridge

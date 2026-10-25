@@ -17,6 +17,7 @@ The name **Yourcar** is a play on the cricket *"yorker"* — a delivery bowled r
 7. [Automated Test Suite & Coverage](#-automated-test-suite--coverage)
 8. [My AI Usage & Pair Programming Reflection](#-my-ai-usage--pair-programming-reflection)
 9. [3D Model Attribution](#-3d-model-attribution)
+10. [Production Docker & Cloud Deployment](#-production-docker--cloud-deployment)
 
 ---
 
@@ -264,6 +265,22 @@ The 3D vehicle model bundled in `frontend/public/models/sample-car.glb` is:
 - **Creator**: The Khronos Group & glTF Sample Assets contributors.
 - **License**: [Creative Commons Attribution 4.0 International (CC-BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
 - **Modifications**: Converted and packaged as a standalone binary `.glb` for web asset delivery in Google `<model-viewer>`.
+
+---
+
+## 🚀 Production Docker & Cloud Deployment
+
+Yourcar is pre-configured for both one-command production Docker deployments and cloud hosting:
+
+### Single-Command Production Run (Docker Compose):
+```bash
+docker compose -f docker-compose.prod.yml up --build -d
+```
+- **Frontend SPA**: `http://localhost:8080` (Nginx Alpine with SPA routing and Gzip compression)
+- **Backend API**: `http://localhost:3000` (Node 20 Alpine with auto-migration)
+- **PostgreSQL**: Internal private container network
+
+For cloud deployment options on **Vercel, Render, and Neon.tech**, see the complete [`DEPLOYMENT.md`](./DEPLOYMENT.md) guide.
 
 ---
 

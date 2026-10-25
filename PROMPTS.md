@@ -85,3 +85,17 @@ This file contains raw, unedited prompts sent to AI tools during the development
 > yes lets continue.
 
 > continue
+
+> so building and testing is done?? and we r preparing for deployment?
+
+> before that shall i run and check?
+
+> give me the required details to add a new vehicle..
+
+> [Screenshot: 3D MODEL GLB URL input tooltip "Please enter a URL"]
+
+> i tested and the thing is i added the porsche car that u gave and in 3D view it is not porsche
+
+> lets keep this.
+
+> lets continue. i hope we can do changes later on
