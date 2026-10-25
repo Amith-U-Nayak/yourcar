@@ -45,9 +45,43 @@ This file contains raw, unedited prompts sent to AI tools during the development
 > 7. Optional: deploy live.
 >
 > ## Proposed stack (challenge it only with tradeoffs)
-> ...
-> [full prompt as sent]
+> - Backend: Node.js, Express, TypeScript.
+> - Database: PostgreSQL with Prisma ORM (real database; spin up via docker-compose).
+> - Backend testing: Jest + supertest (TDD).
+> - Frontend: Vite + React + TypeScript + Tailwind CSS.
+> - Frontend testing: Vitest + React Testing Library (TDD for components/hooks).
+> - 3D viewer: `@google/model-viewer` (lazy-loaded web component, simple, robust, fallback-friendly).
+> - Tooling: ESLint, Prettier, git-lfs for any 3D assets.
+>
+> Please confirm you've digested all of this. Then:
+> 1. Propose any refinements or tradeoffs to the stack/plan.
+> 2. Break down the work into sequential, small phases.
+> 3. Stop and wait for my approval before touching code.
 
 ---
 
-_Append new sessions below as development continues._
+## Session 2 — 2026-10-24
+
+> ill come back to continue tomorrow. for now concisely explain what is prisma and what it does and how it helps in this project.
+
+> mongoose also does the same thing ? yes/no
+
+---
+
+## Session 3 — 2026-10-25
+
+> lets continue.
+
+> its running. carry on. i wont be interacting for the next 10-15 min. so work accordinglt
+
+> lets continue
+
+> next
+
+> lets continue
+
+> lets continue
+
+> yes lets continue.
+
+> continue
