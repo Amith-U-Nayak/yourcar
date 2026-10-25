@@ -16,6 +16,7 @@ import { FilterBar, FilterState } from "../components/vehicles/FilterBar";
 import { VehicleModal } from "../components/vehicles/VehicleModal";
 import { RestockModal } from "../components/vehicles/RestockModal";
 import { DeleteModal } from "../components/vehicles/DeleteModal";
+import { VehicleViewerModal } from "../components/vehicles/VehicleViewerModal";
 
 const initialFilterState: FilterState = {
   search: "",
@@ -42,6 +43,8 @@ export function DashboardPage() {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedVehicleForDelete, setSelectedVehicleForDelete] = useState<Vehicle | null>(null);
+
+  const [selectedVehicleForViewer, setSelectedVehicleForViewer] = useState<Vehicle | null>(null);
 
   // Determine if active search/filter queries exist
   const hasActiveFilters = useMemo(() => {
@@ -287,6 +290,7 @@ export function DashboardPage() {
               onEdit={handleOpenEdit}
               onRestock={handleOpenRestock}
               onDelete={handleOpenDelete}
+              onViewDetails={(v) => setSelectedVehicleForViewer(v)}
             />
           ))}
         </div>
@@ -321,6 +325,13 @@ export function DashboardPage() {
         }}
         vehicle={selectedVehicleForDelete}
         loading={deleteMutation.isPending}
+      />
+
+      <VehicleViewerModal
+        isOpen={Boolean(selectedVehicleForViewer)}
+        onClose={() => setSelectedVehicleForViewer(null)}
+        vehicle={selectedVehicleForViewer}
+        onPurchase={handlePurchase}
       />
     </div>
   );
