@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { errorHandler } from "./middleware/errorHandler";
 
 /**
  * Creates and configures the Express application.
@@ -23,6 +24,9 @@ export function createApp(): express.Application {
   // ── API routes (wired up in later phases) ────────────────────────────────────
   // app.use("/api/auth", authRouter);
   // app.use("/api/vehicles", vehicleRouter);
+
+  // ── Global error handler (must be LAST) ──────────────────────────────────────
+  app.use(errorHandler);
 
   return app;
 }

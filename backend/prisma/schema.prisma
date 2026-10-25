@@ -1,0 +1,85 @@
+// Prisma schema for Yourcar
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // URL is injected at runtime from config.ts (switches to TEST_DATABASE_URL in test mode)
+  url      = env("DATABASE_URL")
+}
+
+// ── Enums ─────────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Condition {
+  NEW
+  USED
+}
+
+enum FuelType {
+  PETROL
+  DIESEL
+  EV
+  HYBRID
+}
+
+enum Category {
+  SUV
+  SEDAN
+  HATCHBACK
+  COUPE
+  TRUCK
+  EV
+}
+
+// ── Models ────────────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  // bcrypt hash — never store plain text
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Vehicle {
+  id       String    @id @default(uuid())
+  make     String
+  model    String
+  category Category
+  // Decimal for money — avoids floating-point rounding errors
+  price    Decimal   @db.Decimal(10, 2)
+
+  // Stock rules (enforced in the service layer, documented here):
+  //   NEW  → quantity ≥ 0, can be > 1 (identical units in stock)
+  //   USED → quantity must be 0 or 1 (each record = a unique physical car)
+  quantity  Int       @default(1)
+  condition Condition @default(NEW)
+
+  year     Int
+  fuelType FuelType
+
+  // Optional media
+  imageUrl String? // URL to a photo
+  modelUrl String? // URL to a .glb file for the 3D viewer
+
+  // Used-only fields — required at the service layer when condition = USED
+  mileage     Int?
+  ownersCount Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("vehicles")
+}
