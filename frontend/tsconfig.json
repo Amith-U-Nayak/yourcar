@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "useDefaults": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
 
     /* Bundler mode — Vite handles module resolution */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,           /* Vite compiles, tsc only type-checks */
+    "noEmit": true,
 
     /* Strict type-checking */
     "strict": true,
@@ -27,6 +25,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src"]
 }

@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { ProtectedRoute, AdminRoute } from "../components/auth/ProtectedRoute";
@@ -6,7 +5,6 @@ import { AuthContext } from "../context/AuthContext";
 import { describe, it, expect } from "vitest";
 
 function renderWithAuth(
-  ui: React.ReactElement,
   authValue: any,
   initialPath = "/protected"
 ) {
@@ -31,7 +29,6 @@ function renderWithAuth(
 describe("Route Protection", () => {
   it("redirects unauthenticated user to /login", () => {
     renderWithAuth(
-      <div />,
       {
         isAuthenticated: false,
         isAdmin: false,
@@ -50,7 +47,6 @@ describe("Route Protection", () => {
 
   it("renders protected content when user is authenticated", () => {
     renderWithAuth(
-      <div />,
       {
         isAuthenticated: true,
         isAdmin: false,
@@ -68,7 +64,6 @@ describe("Route Protection", () => {
 
   it("denies regular USER access to AdminRoute (redirects to /)", () => {
     renderWithAuth(
-      <div />,
       {
         isAuthenticated: true,
         isAdmin: false,
@@ -87,7 +82,6 @@ describe("Route Protection", () => {
 
   it("allows ADMIN access to AdminRoute", () => {
     renderWithAuth(
-      <div />,
       {
         isAuthenticated: true,
         isAdmin: true,
@@ -103,3 +97,4 @@ describe("Route Protection", () => {
     expect(screen.getByText("Admin Dashboard")).toBeInTheDocument();
   });
 });
+

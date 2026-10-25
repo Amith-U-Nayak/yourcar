@@ -1,8 +1,8 @@
-import React from "react";
 import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AuthProvider, useAuth } from "../context/AuthContext";
 import * as api from "../api/client";
+import { Role, User } from "../types";
 import { vi, describe, it, expect, beforeEach } from "vitest";
 
 // Mock API client
@@ -12,7 +12,7 @@ vi.mock("../api/client", () => ({
 }));
 
 function TestConsumer() {
-  const { user, token, isAuthenticated, isAdmin, login, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, login, logout } = useAuth();
 
   return (
     <div>
@@ -45,7 +45,7 @@ describe("AuthContext", () => {
   });
 
   it("hydrates auth state from localStorage if valid session exists", () => {
-    const mockUser = { id: "123", email: "admin@yourcar.com", role: "ADMIN" };
+    const mockUser: User = { id: "123", email: "admin@yourcar.com", role: "ADMIN" as Role };
     localStorage.setItem("yourcar_token", "fake-jwt-token");
     localStorage.setItem("yourcar_user", JSON.stringify(mockUser));
 
@@ -61,7 +61,7 @@ describe("AuthContext", () => {
   });
 
   it("updates state and localStorage on successful login", async () => {
-    const mockUser = { id: "u-1", email: "test@yourcar.com", role: "USER" };
+    const mockUser: User = { id: "u-1", email: "test@yourcar.com", role: "USER" as Role };
     vi.mocked(api.loginApi).mockResolvedValueOnce({
       token: "new-jwt-token",
       user: mockUser,
