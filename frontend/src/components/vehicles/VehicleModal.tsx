@@ -335,10 +335,10 @@ export function VehicleModal({
                 Photo URL (Optional)
               </label>
               <input
-                type="url"
+                type="text"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                placeholder="https://images.unsplash.com/..."
+                placeholder="https://images.unsplash.com/... or /images/..."
                 className="w-full px-3 py-2 rounded-xl bg-surface border border-white/10 text-xs focus:border-brand focus:outline-none"
               />
             </div>
@@ -347,10 +347,10 @@ export function VehicleModal({
                 3D Model GLB URL (Optional for 3D View)
               </label>
               <input
-                type="url"
+                type="text"
                 value={modelUrl}
                 onChange={(e) => setModelUrl(e.target.value)}
-                placeholder="https://example.com/car.glb"
+                placeholder="https://example.com/car.glb or /models/sample-car.glb"
                 className="w-full px-3 py-2 rounded-xl bg-surface border border-white/10 text-xs focus:border-brand focus:outline-none"
               />
             </div>
