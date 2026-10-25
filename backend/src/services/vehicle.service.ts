@@ -6,6 +6,7 @@ import {
 import {
   CreateVehicleInput,
   UpdateVehicleInput,
+  VehicleSearchFilters,
 } from "../validators/vehicle.validator";
 import { AppError } from "../errors/AppError";
 
@@ -31,6 +32,10 @@ export class VehicleService {
 
   async findAll(): Promise<Vehicle[]> {
     return this.vehicleRepo.findAll();
+  }
+
+  async search(filters: VehicleSearchFilters): Promise<Vehicle[]> {
+    return this.vehicleRepo.search(filters);
   }
 
   async findById(id: string): Promise<Vehicle> {

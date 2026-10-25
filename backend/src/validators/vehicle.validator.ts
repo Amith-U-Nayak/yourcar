@@ -77,3 +77,18 @@ export const updateVehicleSchema = z
 
 export type CreateVehicleInput = z.infer<typeof createVehicleSchema>;
 export type UpdateVehicleInput = z.infer<typeof updateVehicleSchema>;
+
+export const searchVehicleQuerySchema = z.object({
+  make: z.string().optional(),
+  model: z.string().optional(),
+  category: z.nativeEnum(Category).optional(),
+  minPrice: z.coerce.number().positive().optional(),
+  maxPrice: z.coerce.number().positive().optional(),
+  condition: z.nativeEnum(Condition).optional(),
+  fuelType: z.nativeEnum(FuelType).optional(),
+  minYear: z.coerce.number().int().min(1900).optional(),
+  maxYear: z.coerce.number().int().min(1900).optional(),
+});
+
+export type VehicleSearchFilters = z.infer<typeof searchVehicleQuerySchema>;
+

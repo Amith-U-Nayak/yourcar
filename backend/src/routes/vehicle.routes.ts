@@ -14,6 +14,7 @@ const router = Router();
 router.use(authenticate);
 
 // Protected routes (Both USER and ADMIN)
+router.get("/search", vehicleController.search);
 router.get("/", vehicleController.getAll);
 router.get("/:id", vehicleController.getById);
 

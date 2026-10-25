@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { vehicleService, VehicleService } from "../services/vehicle.service";
+import { searchVehicleQuerySchema } from "../validators/vehicle.validator";
 
 export class VehicleController {
   constructor(private service: VehicleService = vehicleService) {}
@@ -27,6 +28,23 @@ export class VehicleController {
   ): Promise<void> => {
     try {
       const vehicles = await this.service.findAll();
+      res.status(200).json({
+        status: "success",
+        data: { vehicles },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  search = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const filters = searchVehicleQuerySchema.parse(req.query);
+      const vehicles = await this.service.search(filters);
       res.status(200).json({
         status: "success",
         data: { vehicles },
