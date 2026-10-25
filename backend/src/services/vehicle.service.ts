@@ -70,6 +70,42 @@ export class VehicleService {
     await this.findById(id); // Throws 404 if not found
     return this.vehicleRepo.delete(id);
   }
+
+  async purchase(id: string): Promise<Vehicle> {
+    const vehicle = await this.findById(id);
+
+    if (vehicle.quantity <= 0) {
+      const message =
+        vehicle.condition === Condition.USED
+          ? "Vehicle is sold out"
+          : "Vehicle is out of stock";
+      throw new AppError(409, message);
+    }
+
+    return this.vehicleRepo.decrementQuantity(id);
+  }
+
+  async restock(id: string, amount: number = 1): Promise<Vehicle> {
+    const vehicle = await this.findById(id);
+
+    if (vehicle.condition === Condition.USED) {
+      if (vehicle.quantity > 0) {
+        throw new AppError(
+          409,
+          "Cannot restock a used vehicle that is already in stock"
+        );
+      }
+      if (amount > 1) {
+        throw new AppError(
+          400,
+          "Used vehicles can only be restocked to quantity 1"
+        );
+      }
+      return this.vehicleRepo.setQuantity(id, 1);
+    }
+
+    return this.vehicleRepo.incrementQuantity(id, amount);
+  }
 }
 
 export const vehicleService = new VehicleService();

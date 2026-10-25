@@ -104,6 +104,41 @@ export class VehicleController {
       next(error);
     }
   };
+
+  purchase = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const id = req.params.id as string;
+      const vehicle = await this.service.purchase(id);
+      res.status(200).json({
+        status: "success",
+        data: { vehicle },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  restock = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const id = req.params.id as string;
+      const amount = req.body.quantity ?? 1;
+      const vehicle = await this.service.restock(id, amount);
+      res.status(200).json({
+        status: "success",
+        data: { vehicle },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export const vehicleController = new VehicleController();

@@ -76,6 +76,31 @@ export class VehicleRepository {
       where: { id },
     });
   }
+
+  async decrementQuantity(id: string): Promise<Vehicle> {
+    return prisma.vehicle.update({
+      where: { id },
+      data: {
+        quantity: { decrement: 1 },
+      },
+    });
+  }
+
+  async incrementQuantity(id: string, amount: number): Promise<Vehicle> {
+    return prisma.vehicle.update({
+      where: { id },
+      data: {
+        quantity: { increment: amount },
+      },
+    });
+  }
+
+  async setQuantity(id: string, quantity: number): Promise<Vehicle> {
+    return prisma.vehicle.update({
+      where: { id },
+      data: { quantity },
+    });
+  }
 }
 
 export const vehicleRepository = new VehicleRepository();

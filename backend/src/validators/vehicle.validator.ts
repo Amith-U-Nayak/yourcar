@@ -92,3 +92,15 @@ export const searchVehicleQuerySchema = z.object({
 
 export type VehicleSearchFilters = z.infer<typeof searchVehicleQuerySchema>;
 
+export const restockVehicleSchema = z.object({
+  quantity: z
+    .number()
+    .int("Quantity must be an integer")
+    .positive("Restock quantity must be positive")
+    .optional()
+    .default(1),
+});
+
+export type RestockVehicleInput = z.infer<typeof restockVehicleSchema>;
+
+

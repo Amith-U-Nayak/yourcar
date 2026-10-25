@@ -5,6 +5,7 @@ import { validate } from "../middleware/validate";
 import {
   createVehicleSchema,
   updateVehicleSchema,
+  restockVehicleSchema,
 } from "../validators/vehicle.validator";
 import { Role } from "@prisma/client";
 
@@ -17,6 +18,9 @@ router.use(authenticate);
 router.get("/search", vehicleController.search);
 router.get("/", vehicleController.getAll);
 router.get("/:id", vehicleController.getById);
+
+// Purchase route (Both USER and ADMIN)
+router.post("/:id/purchase", vehicleController.purchase);
 
 // Admin-only routes
 router.post(
@@ -37,6 +41,13 @@ router.delete(
   "/:id",
   requireRole(Role.ADMIN),
   vehicleController.delete
+);
+
+router.post(
+  "/:id/restock",
+  requireRole(Role.ADMIN),
+  validate(restockVehicleSchema),
+  vehicleController.restock
 );
 
 export { router as vehicleRouter };
