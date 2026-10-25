@@ -1,6 +1,7 @@
 import request from "supertest";
 import { createApp } from "../app";
 import { prisma } from "../lib/prisma";
+import { userRepository } from "../repositories/user.repository";
 
 const app = createApp();
 
@@ -162,6 +163,13 @@ describe("Auth Module — /api/auth", () => {
 
       expect(response.status).toBe(400);
       expect(response.body.status).toBe("error");
+    });
+
+    it("allows finding user by ID via userRepository", async () => {
+      const user = await userRepository.findByEmail("login@yourcar.com");
+      expect(user).not.toBeNull();
+      const byId = await userRepository.findById(user!.id);
+      expect(byId?.email).toBe("login@yourcar.com");
     });
   });
 });

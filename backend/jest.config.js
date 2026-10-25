@@ -25,6 +25,7 @@ module.exports = {
     "src/**/*.ts",
     "!src/**/*.test.ts",
     "!src/index.ts",      // entry point — integration-tested via supertest
+    "!src/types/**",      // ambient TypeScript declarations (.d.ts)
     "!src/generated/**",  // Prisma generated code
   ],
 

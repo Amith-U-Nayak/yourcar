@@ -113,5 +113,17 @@ describe("Auth Middleware — authenticate & requireRole", () => {
       expect(res.body.status).toBe("error");
       expect(res.body.message).toMatch(/forbidden|insufficient/i);
     });
+
+    it("returns 401 when requireRole is evaluated without an authenticated user", async () => {
+      const unauthApp = express();
+      unauthApp.get("/no-auth", requireRole(Role.ADMIN), (_req, res) => {
+        res.json({ ok: true });
+      });
+      unauthApp.use(errorHandler);
+
+      const res = await request(unauthApp).get("/no-auth");
+      expect(res.status).toBe(401);
+      expect(res.body.message).toMatch(/authentication required/i);
+    });
   });
 });

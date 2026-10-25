@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { errorHandler } from "./middleware/errorHandler";
+import { authRouter } from "./routes/auth.routes";
 
 /**
  * Creates and configures the Express application.
@@ -21,8 +22,8 @@ export function createApp(): express.Application {
     res.json({ status: "ok", service: "yourcar-api" });
   });
 
-  // ── API routes (wired up in later phases) ────────────────────────────────────
-  // app.use("/api/auth", authRouter);
+  // ── API routes ──────────────────────────────────────────────────────────────
+  app.use("/api/auth", authRouter);
   // app.use("/api/vehicles", vehicleRouter);
 
   // ── Global error handler (must be LAST) ──────────────────────────────────────

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AppError } from "../errors/AppError";
 import { errorHandler } from "../middleware/errorHandler";
+import { config } from "../config";
 
 // Helper: build a minimal mock Express Response
 function mockResponse() {
@@ -81,5 +82,18 @@ describe("errorHandler middleware", () => {
     // Status must be 500 and we must NOT leak the internal error message
     expect(res.statusCode).toBe(500);
     expect(res.body).toEqual({ status: "error", message: "Internal server error" });
+  });
+
+  it("in development mode, reveals the real error message on 500 for debugging", () => {
+    const originalEnv = config.nodeEnv;
+    (config as Record<string, unknown>).nodeEnv = "development";
+    const err = new Error("Database deadlock details");
+    const res = mockResponse();
+
+    errorHandler(err, {} as Request, res as unknown as Response, noop);
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body).toEqual({ status: "error", message: "Database deadlock details" });
+    (config as Record<string, unknown>).nodeEnv = originalEnv;
   });
 });
