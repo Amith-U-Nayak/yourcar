@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { Category, Condition, FuelType } from "@prisma/client";
 
+const isValidUrlOrPath = (val: string) =>
+  val.startsWith("/") || /^https?:\/\//i.test(val);
+
 export const createVehicleSchema = z
   .object({
     make: z.string().min(1, "Make is required"),
@@ -19,8 +22,8 @@ export const createVehicleSchema = z
     fuelType: z.nativeEnum(FuelType, {
       errorMap: () => ({ message: "Invalid fuel type" }),
     }),
-    imageUrl: z.string().url("Invalid image URL").optional().nullable(),
-    modelUrl: z.string().url("Invalid 3D model URL").optional().nullable(),
+    imageUrl: z.string().refine(isValidUrlOrPath, "Invalid image URL or path").optional().nullable(),
+    modelUrl: z.string().refine(isValidUrlOrPath, "Invalid 3D model URL or path").optional().nullable(),
     mileage: z.number().int().min(0, "Mileage cannot be negative").optional().nullable(),
     ownersCount: z.number().int().min(0, "Owners count cannot be negative").optional().nullable(),
   })
@@ -60,8 +63,8 @@ export const updateVehicleSchema = z
     condition: z.nativeEnum(Condition).optional(),
     year: z.number().int().min(1900).max(new Date().getFullYear() + 1).optional(),
     fuelType: z.nativeEnum(FuelType).optional(),
-    imageUrl: z.string().url().optional().nullable(),
-    modelUrl: z.string().url().optional().nullable(),
+    imageUrl: z.string().refine(isValidUrlOrPath, "Invalid image URL or path").optional().nullable(),
+    modelUrl: z.string().refine(isValidUrlOrPath, "Invalid 3D model URL or path").optional().nullable(),
     mileage: z.number().int().min(0).optional().nullable(),
     ownersCount: z.number().int().min(0).optional().nullable(),
   })
